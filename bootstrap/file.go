@@ -9,6 +9,6 @@ func InitFile(engine *gin.Engine) {
 	routeGroup := engine.Group("/api")
 	{
 		c := new(controller.FileController)
-		routeGroup.GET("/v1/file/upload", c.Upload)
+		routeGroup.POST("/v1/file/upload", c.Upload)
 	}
 }

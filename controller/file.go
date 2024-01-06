@@ -9,6 +9,11 @@ import (
 
 type FileController struct{}
 
+/*
+curl --location --request POST 'http://127.0.0.1:8192/api/v1/file/upload' \
+--header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
+--form 'file=@"/Users/zen/Downloads/thunder_5.20.1.66132.dmg"'
+*/
 func (f FileController) Upload(ctx *gin.Context) {
 	file, header, err := ctx.Request.FormFile("file")
 	if err != nil {

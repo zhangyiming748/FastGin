@@ -11,7 +11,7 @@ func main() {
 	engine := gin.New()
 
 	bootstrap.InitService1(engine)
-
+	bootstrap.InitFile(engine)
 	// 启动http服务
 
 	engine.Run(":8192")

@@ -9,7 +9,9 @@ func main() {
 
 	// gin服务
 	engine := gin.New()
+
 	bootstrap.InitService1(engine)
+
 	// 启动http服务
 
 	engine.Run(":8192")

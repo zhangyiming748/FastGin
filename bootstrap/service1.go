@@ -7,7 +7,6 @@ import (
 
 func InitService1(engine *gin.Engine) {
 	routeGroup := engine.Group("/api")
-
 	{
 		c := new(controller.S1Controller)
 		routeGroup.GET("/v1/s1/gethello", c.GetHello)

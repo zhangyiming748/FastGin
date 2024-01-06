@@ -2,7 +2,10 @@ module github.com/zhangyiming748/basicGin
 
 go 1.21
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/gin-contrib/timeout v0.0.6
+	github.com/gin-gonic/gin v1.9.1
+)
 
 require (
 	github.com/bytedance/sonic v1.10.2 // indirect

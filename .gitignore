@@ -10,3 +10,5 @@ vendor
 *.test
 *.out
 go.work
+*.json
+*.txt

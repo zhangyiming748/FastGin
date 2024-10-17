@@ -34,6 +34,7 @@ func main() {
 	bootstrap.InitService1(engine)
 	bootstrap.InitFile(engine)
 	bootstrap.InitClipboard(engine)
+	bootstrap.InitTelegram(engine)
 	// 启动http服务
 
 	engine.Run(":8192")

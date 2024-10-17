@@ -11,8 +11,8 @@ type TelegramController struct{}
 
 // 结构体必须大写 否则找不到
 type TelegramRequestBody struct {
-	Uri   string `json:"url"`
-	Proxy string `json:"proxy"`
+	Urls  []string `json:"urls"`
+	Proxy string   `json:"proxy"`
 }
 type TelegramResponseBody struct {
 	Output string `json:"output"`
@@ -28,20 +28,16 @@ curl -X POST http://127.0.0.1:8192/api/v1/telegram/download/telegram \
 	    "proxy": "http://proxy.example.com:8080"
 	}'
 */
-func (t TelegramController) PostTelegram(ctx *gin.Context) {
-
+func (t TelegramController) DownloadAll(ctx *gin.Context) {
 	var requestBody TelegramRequestBody
 	if err := ctx.BindJSON(&requestBody); err != nil {
 		ctx.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Printf("url = %s \n proxy = %s\n", requestBody.Uri, requestBody.Proxy)
+	fmt.Printf("url = %s \n proxy = %s\n", requestBody.Urls, requestBody.Proxy)
 	var rep TelegramResponseBody
 	log.Println("开始下载")
-	output, err := logic.Download(requestBody.Uri, requestBody.Proxy)
-	if err != nil {
-		rep.Msg = err.Error()
-	}
-	rep.Output = output
+	go logic.Downloads(requestBody.Urls, requestBody.Proxy)
+	rep.Msg = "已经开始下载"
 	ctx.JSON(200, rep)
 }

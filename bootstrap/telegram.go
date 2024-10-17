@@ -10,6 +10,6 @@ func InitTelegram(engine *gin.Engine) {
 	{
 		c := new(controller.TelegramController)
 		//routeGroup.GET("/v1/s1/gethello", c.GetHello)
-		routeGroup.POST("/v1/telegram/download", c.PostTelegram)
+		routeGroup.POST("/v1/telegram/download", c.DownloadAll)
 	}
 }

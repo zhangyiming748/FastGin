@@ -26,9 +26,10 @@ func Downloads(urls []string, proxy string) {
 		output, fail := Download(url, proxy)
 		if fail != nil {
 			count++
-			out := fmt.Sprintf("%s download fail ,err:%s:%v", url, output, fail)
+			out := fmt.Sprintf("download fail :%s", url)
 			f.WriteString(out)
 		}
+		fmt.Println(output)
 	}
 	f.Sync()
 }

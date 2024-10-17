@@ -2,6 +2,7 @@ package logic
 
 import (
 	"fmt"
+	"github.com/zhangyiming748/basicGin/util"
 	"os"
 	"testing"
 )
@@ -30,7 +31,7 @@ func TestDownloadTelegram(t *testing.T) {
 }
 
 func TestDownloadsTelegram(t *testing.T) {
-	urls := []string{"https://t.me/woshadiao/165436", "https://t.me/cosplayandanime/9190", "https://t.me/cosplayandanime/9191", "https://t.me/cosplayandanime/9192", "https://t.me/cosplayandanime/9191", "https://t.me/cosplayandanime/9193", "https://t.me/cosplayandanime/9194", "https://t.me/cosplayandanime/9195", "https://t.me/cosplayandanime/9196", "https://t.me/cosplayandanime/9197", "https://t.me/cosplayandanime/9198"}
+	urls := util.ReadByLine("post.link")
 	proxy := "http://127.0.0.1:8889"
 	Downloads(urls, proxy)
 }

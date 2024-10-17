@@ -14,7 +14,8 @@ func Downloads(urls []string, proxy string) {
 	var status string
 	var count int
 	defer func() {
-		fmt.Sprintf("全部下载结束,失败 %d / %d 个\n", count, len(urls))
+		status = fmt.Sprintf("全部下载结束,失败 %d / %d 个\n", count, len(urls))
+		log.Println(status)
 	}()
 	f, err := os.OpenFile("failed.txt", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {

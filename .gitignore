@@ -12,3 +12,5 @@ vendor
 go.work
 *.json
 *.txt
+post.link
+failed.txt

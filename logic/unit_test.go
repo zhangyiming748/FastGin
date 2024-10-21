@@ -19,17 +19,6 @@ func TestPATH(t *testing.T) {
 	}
 }
 
-func TestDownloadTelegram(t *testing.T) {
-	uri := "https://t.me/woshadiao/165436"
-	proxy := "http://127.0.0.1:8889"
-	download, err := Download(uri, proxy)
-	if err != nil {
-		return
-	} else {
-		t.Logf("%v\n", download)
-	}
-}
-
 func TestDownloadsTelegram(t *testing.T) {
 	urls := util.ReadByLine("post.link")
 	proxy := "http://127.0.0.1:8889"

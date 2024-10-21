@@ -23,17 +23,16 @@ func Downloads(urls []string, proxy string) {
 	}
 	defer f.Close()
 	for _, url := range urls {
-		output, fail := Download(url, proxy)
+		fail := Download(url, proxy)
 		if fail != nil {
 			count++
 			out := fmt.Sprintf("download fail :%s\n", url)
 			f.WriteString(out)
 		}
-		fmt.Println(output)
 	}
 	f.Sync()
 }
-func Download(uri, proxy string) (string, error) {
+func Download(uri, proxy string) error {
 	var status string
 	defer func() {
 		log.Println(status)
@@ -41,7 +40,7 @@ func Download(uri, proxy string) (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("无法获取用户的个人文件夹目录:", err)
-		return "", err
+		return err
 	}
 	dir := filepath.Join(home, "Downloads")
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
@@ -51,13 +50,13 @@ func Download(uri, proxy string) (string, error) {
 	tdl := util.WindowsTelegramLocation
 	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
-	output, err := cmd.CombinedOutput()
+	err = util.ExecCommandWithBar(cmd)
 	if err != nil {
-		log.Println("下载命令执行出错", string(output))
+		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")
-		return string(output), err
+		return err
 	} else {
 		status = strings.Join([]string{status, "下载成功"}, "")
-		return string(output), nil
+		return nil
 	}
 }

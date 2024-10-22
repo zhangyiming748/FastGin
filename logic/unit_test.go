@@ -7,6 +7,9 @@ import (
 	"testing"
 )
 
+func init() {
+	util.SetLog("telegram.log")
+}
 func TestPATH(t *testing.T) {
 	// 获取环境变量 PROFILE
 	profile := os.Getenv("userprofile")

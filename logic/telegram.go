@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -23,12 +24,31 @@ func Downloads(urls []string, proxy string) {
 	}
 	defer f.Close()
 	for _, url := range urls {
-		fail := Download(url, proxy)
-		if fail != nil {
-			count++
-			out := fmt.Sprintf("download fail :%s\n", url)
-			f.WriteString(out)
+		if strings.Contains(url, " ") {
+			base := strings.Split(url, " ")[0]                  //https://t.me/acgr18/34406
+			step, _ := strconv.Atoi(strings.Split(url, " ")[1]) //9
+			//https://t.me/acgr18/34406 9
+			prefix, suffix, _ := Split(base)
+			for i := 0; i < step; i++ {
+				uri := strings.Join([]string{prefix, strconv.Itoa(suffix + i)}, "/")
+				log.Printf("Downloading %s to %s\n", uri, proxy)
+				fail := Download(uri, proxy)
+				if fail != nil {
+					count++
+					out := fmt.Sprintf("download fail :%s\n", url)
+					f.WriteString(out)
+				}
+			}
+
+		} else {
+			fail := Download(url, proxy)
+			if fail != nil {
+				count++
+				out := fmt.Sprintf("download fail :%s\n", url)
+				f.WriteString(out)
+			}
 		}
+
 	}
 	f.Sync()
 }
@@ -60,5 +80,19 @@ func Download(uri, proxy string) error {
 	} else {
 		status = strings.Join([]string{status, "下载成功"}, "")
 		return nil
+	}
+}
+
+func Split(s string) (prefix string, suffix int, err error) {
+	lastSlashIndex := strings.LastIndex(s, "/")
+
+	if lastSlashIndex != -1 {
+		// 分割字符串
+		beforeLastSlash := s[:lastSlashIndex]
+		afterLastSlash, _ := strconv.Atoi(s[lastSlashIndex+1:])
+
+		return beforeLastSlash, afterLastSlash, nil
+	} else {
+		return "", -1, err
 	}
 }

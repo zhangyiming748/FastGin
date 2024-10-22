@@ -32,6 +32,8 @@ func Downloads(urls []string, proxy string) {
 	}
 	f.Sync()
 }
+
+// https://github.com/iyear/tdl.git
 func Download(uri, proxy string) error {
 	var status string
 	defer func() {
@@ -50,7 +52,7 @@ func Download(uri, proxy string) error {
 	tdl := util.WindowsTelegramLocation
 	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
-	err = util.ExecCommandWithBar(cmd)
+	err = util.ExecCommand(cmd)
 	if err != nil {
 		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")

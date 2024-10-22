@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	"github.com/schollz/progressbar/v3"
-	"github.com/zhangyiming748/pretty"
 	"log"
 	"os/exec"
 	"regexp"
@@ -14,7 +13,7 @@ import (
 /*
 执行命令过程中可以循环打印消息
 */
-func ExecCommand(c *exec.Cmd, msg string) (e error) {
+func ExecCommand(c *exec.Cmd) (e error) {
 	log.Printf("开始执行命令:%v\n", c.String())
 	stdout, err := c.StdoutPipe()
 	c.Stderr = c.Stdout
@@ -31,7 +30,7 @@ func ExecCommand(c *exec.Cmd, msg string) (e error) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = strings.Replace(t, "\u0000", "", -1)
-		pretty.P(fmt.Sprintf("\r%v\n%v", t, msg))
+		fmt.Printf("\r%v", t)
 		if err != nil {
 			break
 		}
@@ -41,10 +40,6 @@ func ExecCommand(c *exec.Cmd, msg string) (e error) {
 		return err
 	}
 	return nil
-}
-func GetVideoName(c *exec.Cmd) (name string) {
-	output, _ := c.CombinedOutput()
-	return string(output)
 }
 
 /*

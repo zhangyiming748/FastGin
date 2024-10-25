@@ -33,7 +33,7 @@ func Downloads(urls []string, proxy string) {
 			for i := 0; i < step; i++ {
 				uri := strings.Join([]string{prefix, strconv.Itoa(suffix + i)}, "/")
 				log.Printf("Downloading %s to %s\n", uri, proxy)
-				_, fail := Download(uri, proxy)
+				fail := Download(uri, proxy)
 				if fail != nil {
 					count++
 					out := fmt.Sprintf("download fail :%s\n", url)
@@ -45,8 +45,7 @@ func Downloads(urls []string, proxy string) {
 			dir := strings.Split(url, "#")[1]
 			dir = strings.Split(dir, "@")[0]
 			fname := strings.Split(url, "@")[1]
-			key, fail := DownloadWithFolder(base, proxy, dir)
-			log.Printf("key is %s\n", key)
+			fail := DownloadWithFolder(base, proxy, dir)
 			if fail != nil {
 				count++
 				out := fmt.Sprintf("download fail :%s\n", url)
@@ -56,14 +55,14 @@ func Downloads(urls []string, proxy string) {
 		} else if strings.Contains(url, "#") {
 			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406
 			dir := strings.Split(url, "#")[1]
-			_, fail := DownloadWithFolder(base, proxy, dir)
+			fail := DownloadWithFolder(base, proxy, dir)
 			if fail != nil {
 				count++
 				out := fmt.Sprintf("download fail :%s\n", url)
 				f.WriteString(out)
 			}
 		} else {
-			_, fail := Download(url, proxy)
+			fail := Download(url, proxy)
 			if fail != nil {
 				count++
 				out := fmt.Sprintf("download fail :%s\n", url)
@@ -75,7 +74,7 @@ func Downloads(urls []string, proxy string) {
 }
 
 // https://github.com/iyear/tdl.git
-func Download(uri, proxy string) (string, error) {
+func Download(uri, proxy string) error {
 	var status string
 	defer func() {
 		log.Println(status)
@@ -83,7 +82,7 @@ func Download(uri, proxy string) (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("无法获取用户的个人文件夹目录:", err)
-		return "", err
+		return err
 	}
 	dir := filepath.Join(home, "Downloads")
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
@@ -96,17 +95,17 @@ func Download(uri, proxy string) (string, error) {
 	}
 	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
-	key, err := util.ExecCommand(cmd)
+	err = util.ExecCommand(cmd)
 	if err != nil {
 		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")
-		return "", err
+		return err
 	} else {
 		status = strings.Join([]string{status, "下载成功"}, "")
-		return key, nil
+		return nil
 	}
 }
-func DownloadWithFolder(uri, proxy, fname string) (string, error) {
+func DownloadWithFolder(uri, proxy, fname string) error {
 	var status string
 	defer func() {
 		log.Println(status)
@@ -114,7 +113,7 @@ func DownloadWithFolder(uri, proxy, fname string) (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("无法获取用户的个人文件夹目录:", err)
-		return "", err
+		return err
 	}
 	dir := filepath.Join(home, "Downloads")
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
@@ -127,14 +126,14 @@ func DownloadWithFolder(uri, proxy, fname string) (string, error) {
 	}
 	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
-	key, err := util.ExecCommand(cmd)
+	err = util.ExecCommand(cmd)
 	if err != nil {
 		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")
-		return "", err
+		return err
 	} else {
 		status = strings.Join([]string{status, "下载成功"}, "")
-		return key, nil
+		return nil
 	}
 }
 

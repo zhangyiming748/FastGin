@@ -21,6 +21,6 @@ func TestPATH(t *testing.T) {
 
 func TestDownloadsTelegram(t *testing.T) {
 	urls := util.ReadByLine("post.link")
-	proxy := "http://127.0.0.1:8889"
+	proxy := "http://192.168.1.20:8889"
 	Downloads(urls, proxy)
 }

@@ -41,7 +41,7 @@ func Downloads(urls []string, proxy string) {
 				}
 			}
 		} else if strings.Contains(url, "@") {
-			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406
+			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406#3434@feef
 			dir := strings.Split(url, "#")[1]
 			dir = strings.Split(dir, "@")[0]
 			fname := strings.Split(url, "@")[1]
@@ -51,7 +51,9 @@ func Downloads(urls []string, proxy string) {
 				out := fmt.Sprintf("download fail :%s\n", url)
 				f.WriteString(out)
 			}
-			util.RenameByKey(key, fname)
+			if key := findKeyByUrl(url); key != "" {
+				util.RenameByKey(key, fname)
+			}
 		} else if strings.Contains(url, "#") {
 			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406
 			dir := strings.Split(url, "#")[1]
@@ -149,4 +151,26 @@ func Split(s string) (prefix string, suffix int, err error) {
 	} else {
 		return "", -1, err
 	}
+}
+func findKeyByUrl(u string) string {
+	u = "https://t.me/FFLL05/57137?single" // 你可以替换为其他 URL 进行测试
+	var prefix string
+	if strings.Contains(u, "?") {
+		prefix = strings.Split(u, "?")[0]
+	} else if strings.Contains(u, "#") {
+		prefix = strings.Split(u, "#")[0]
+	} else if strings.Contains(u, "@") {
+		prefix = strings.Split(u, "@")[0]
+	}
+	lastSlashIndex := strings.LastIndex(prefix, "/")
+	if lastSlashIndex == -1 {
+		fmt.Println("没有找到 '/'")
+		return ""
+	}
+	// 提取最后一个 '/' 之后的部分
+	lastPart := prefix[lastSlashIndex+1:]
+	// 如果需要确保只提取数字，可以使用 strings.TrimSpace 去除空格
+	// 这里假设最后一部分是数字
+	fmt.Println("提取的数字:", lastPart)
+	return lastPart
 }

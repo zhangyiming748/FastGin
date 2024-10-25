@@ -24,3 +24,9 @@ func TestDownloadsTelegram(t *testing.T) {
 	proxy := "http://192.168.1.20:8889"
 	Downloads(urls, proxy)
 }
+
+func TestFindKey(t *testing.T) {
+	u := "https://t.me/acgr18/34406?re#3434@feef"
+	ret := findKeyByUrl(u)
+	t.Log(ret)
+}

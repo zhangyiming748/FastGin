@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -77,6 +78,9 @@ func Download(uri, proxy string) error {
 	target := filepath.Join(dir, "telegram")
 	os.MkdirAll(target, 0755)
 	tdl := util.WindowsTelegramLocation
+	if runtime.GOOS == "linux" {
+		tdl = util.LinuxTelegramLocation
+	}
 	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
 	err = util.ExecCommand(cmd)

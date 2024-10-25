@@ -11,15 +11,12 @@ func init() {
 	util.SetLog("telegram.log")
 }
 func TestPATH(t *testing.T) {
-	// 获取环境变量 PROFILE
-	profile := os.Getenv("userprofile")
+	home, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Println("无法获取用户的个人文件夹目录:", err)
 
-	// 检查环境变量是否存在
-	if profile == "" {
-		fmt.Println("环境变量 PROFILE 不存在")
-	} else {
-		fmt.Printf("PROFILE 环境变量的值: %s\n", profile)
 	}
+	t.Log(home)
 }
 
 func TestDownloadsTelegram(t *testing.T) {

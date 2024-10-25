@@ -30,9 +30,11 @@ func ExecCommand(c *exec.Cmd) (key string, e error) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = strings.Replace(t, "\u0000", "", -1)
-		if n := GetKey(t); n != "" {
-			key = n
-			log.Printf("捕获到关键词:%v\n", key)
+		if key == "" {
+			if n := GetKey(t); n != "" {
+				key = n
+				log.Printf("捕获到关键词:%v\n", key)
+			}
 		}
 		fmt.Printf("\r%v", t)
 		if err != nil {

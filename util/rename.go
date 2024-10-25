@@ -41,7 +41,6 @@ func RenameByKey(key, words string) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("无法获取用户的个人文件夹目录:", err)
-
 	}
 	home = filepath.Join(home, "Downloads", "telegram")
 	//key := "6600"
@@ -49,7 +48,7 @@ func RenameByKey(key, words string) {
 	if err != nil {
 		fmt.Println("无法获取用户的个人文件夹目录:", err)
 	}
-	log.Printf("absfile: %s", absFile)
+	fmt.Printf("absfile: %s", absFile)
 	dir := filepath.Dir(absFile)       // 获取目录路径
 	fileName := filepath.Base(absFile) // 获取文件名
 	fmt.Println("目录路径:", dir)
@@ -58,6 +57,6 @@ func RenameByKey(key, words string) {
 	prefix := strings.TrimSuffix(fileName, suffix) //文件名部分
 	fmt.Println(prefix, suffix)
 	newAbsFile := strings.Join([]string{dir, string(os.PathSeparator), words, suffix}, "")
-	fmt.Printf("最终的旧文件名:%s\n新文件名:%v\n", absFile, newAbsFile)
+	log.Printf("最终的旧文件名:%s\n新文件名:%v\n", absFile, newAbsFile)
 	os.Rename(absFile, newAbsFile)
 }

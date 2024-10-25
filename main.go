@@ -4,6 +4,8 @@ import (
 	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 	"github.com/zhangyiming748/basicGin/bootstrap"
+	"github.com/zhangyiming748/basicGin/util"
+	"log"
 	"net/http"
 	"time"
 )
@@ -24,7 +26,10 @@ func timeoutMiddleware() gin.HandlerFunc {
 		timeout.WithResponse(testResponse),
 	)
 }
-
+func init() {
+	util.SetLog("gin.log")
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+}
 func main() {
 
 	// gin服务

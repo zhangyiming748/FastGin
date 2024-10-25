@@ -12,9 +12,6 @@ import (
 	"strings"
 )
 
-func init() {
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-}
 func Downloads(urls []string, proxy string) {
 	var status string
 	var count int

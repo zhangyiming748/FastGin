@@ -32,7 +32,7 @@ func Downloads(urls []string, proxy string) {
 			prefix, suffix, _ := Split(base)
 			for i := 0; i < step; i++ {
 				uri := strings.Join([]string{prefix, strconv.Itoa(suffix + i)}, "/")
-				log.Printf("Downloading %s to %s\n", uri, proxy)
+				log.Printf("Downloading %s with %s\n", uri, proxy)
 				fail := Download(uri, proxy)
 				if fail != nil {
 					count++
@@ -95,7 +95,7 @@ func Download(uri, proxy string) error {
 	if runtime.GOOS == "linux" {
 		tdl = util.LinuxTelegramLocation
 	}
-	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
+	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--threads", "8", "--url", uri, "--dir", target)
 	fmt.Println(cmd.String())
 	err = util.ExecCommand(cmd)
 	if err != nil {

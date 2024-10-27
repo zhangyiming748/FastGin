@@ -153,7 +153,7 @@ func Split(s string) (prefix string, suffix int, err error) {
 	}
 }
 func findKeyByUrl(u string) string {
-	u = "https://t.me/FFLL05/57137?single" // 你可以替换为其他 URL 进行测试
+	//u = "https://t.me/FFLL05/57137?single" // 你可以替换为其他 URL 进行测试
 	var prefix string
 	if strings.Contains(u, "?") {
 		prefix = strings.Split(u, "?")[0]

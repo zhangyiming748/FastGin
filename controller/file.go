@@ -24,6 +24,7 @@ func (f FileController) Upload(ctx *gin.Context) {
 	filename := header.Filename
 	// 保存到当前目录下
 	dst := filename
+	//dst = filepath.Join("C:\\Users\\zen\\Github\\FastGin\\logic", dst)
 	//dst := "/path/to/save/" + filename
 
 	out, err := os.Create(dst)

@@ -31,7 +31,6 @@ func init() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 }
 func main() {
-
 	// gin服务
 	gin.SetMode(gin.DebugMode)
 	engine := gin.New()
@@ -41,7 +40,5 @@ func main() {
 	bootstrap.InitClipboard(engine)
 	bootstrap.InitTelegram(engine)
 	// 启动http服务
-
-	engine.Run(":8193")
-
+	engine.Run(":8192")
 }

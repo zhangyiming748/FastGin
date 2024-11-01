@@ -41,18 +41,32 @@ func Downloads(urls []string, proxy string) {
 				}
 			}
 		} else if strings.Contains(url, "@") {
-			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406#3434@feef
-			dir := strings.Split(url, "#")[1]
-			dir = strings.Split(dir, "@")[0]
-			fname := strings.Split(url, "@")[1]
-			fail := DownloadWithFolder(base, proxy, dir)
-			if fail != nil {
-				count++
-				out := fmt.Sprintf("download fail :%s\n", url)
-				f.WriteString(out)
-			}
-			if key := findKeyByUrl(url); key != "" {
-				util.RenameByKey(key, fname)
+			if strings.Contains(url, "#") {
+				base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406#3434@feef
+				dir := strings.Split(url, "#")[1]
+				dir = strings.Split(dir, "@")[0]
+				fname := strings.Split(url, "@")[1]
+				fail := DownloadWithFolder(base, proxy, dir)
+				if fail != nil {
+					count++
+					out := fmt.Sprintf("download fail :%s\n", url)
+					f.WriteString(out)
+				}
+				if key := findKeyByUrl(url); key != "" {
+					util.RenameByKey(key, fname)
+				}
+			} else {
+				base := strings.Split(url, "@")[0] //https://t.me/acgr18/34406@feef
+				fname := strings.Split(url, "@")[1]
+				fail := Download(base, proxy)
+				if fail != nil {
+					count++
+					out := fmt.Sprintf("download fail :%s\n", url)
+					f.WriteString(out)
+				}
+				if key := findKeyByUrl(url); key != "" {
+					util.RenameByKey(key, fname)
+				}
 			}
 		} else if strings.Contains(url, "#") {
 			base := strings.Split(url, "#")[0] //https://t.me/acgr18/34406
@@ -107,6 +121,7 @@ func Download(uri, proxy string) error {
 		return nil
 	}
 }
+
 func DownloadWithFolder(uri, proxy, fname string) error {
 	var status string
 	defer func() {
@@ -120,6 +135,7 @@ func DownloadWithFolder(uri, proxy, fname string) error {
 	dir := filepath.Join(home, "Downloads")
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
 	fmt.Printf("用户的下载文件夹目录: %s\n", dir)
+	//dir = "\\\\DESKTOP-QESMUDU\\Users\\zen\\share\\FastGin\\logic\\unit_test.go"
 	target := filepath.Join(dir, "telegram", fname)
 	os.MkdirAll(target, 0755)
 	tdl := util.WindowsTelegramLocation

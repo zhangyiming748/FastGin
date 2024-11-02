@@ -101,6 +101,13 @@ func Download(uri, proxy string) error {
 		return err
 	}
 	dir := filepath.Join(home, "Downloads")
+	//err = os.Setenv("PATH", "G:\\tdl")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	if path := os.Getenv("TDL"); path != "" {
+		dir = path
+	}
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
 	fmt.Printf("用户的下载文件夹目录: %s\n", dir)
 	target := filepath.Join(dir, "telegram")
@@ -133,6 +140,13 @@ func DownloadWithFolder(uri, proxy, fname string) error {
 		return err
 	}
 	dir := filepath.Join(home, "Downloads")
+	err = os.Setenv("PATH", "G:\\tdl")
+	if err != nil {
+		log.Fatal(err)
+	}
+	if path := os.Getenv("PATH"); path != "" {
+		dir = path
+	}
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
 	fmt.Printf("用户的下载文件夹目录: %s\n", dir)
 	//dir = "\\\\DESKTOP-QESMUDU\\Users\\zen\\share\\FastGin\\logic\\unit_test.go"

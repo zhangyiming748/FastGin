@@ -5,9 +5,7 @@ import (
 	"github.com/zhangyiming748/basicGin/util"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 )
@@ -101,10 +99,6 @@ func Download(uri, proxy string) error {
 		return err
 	}
 	dir := filepath.Join(home, "Downloads")
-	//err = os.Setenv("PATH", "G:\\tdl")
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
 	if path := os.Getenv("TDL"); path != "" {
 		dir = path
 	}
@@ -112,13 +106,7 @@ func Download(uri, proxy string) error {
 	fmt.Printf("用户的下载文件夹目录: %s\n", dir)
 	target := filepath.Join(dir, "telegram")
 	os.MkdirAll(target, 0755)
-	tdl := util.WindowsTelegramLocation
-	if runtime.GOOS == "linux" {
-		tdl = util.LinuxTelegramLocation
-	}
-	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--threads", "8", "--url", uri, "--dir", target)
-	fmt.Println(cmd.String())
-	err = util.ExecCommand(cmd)
+	err = util.ExecTdlCommand(proxy, uri, target)
 	if err != nil {
 		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")
@@ -140,25 +128,14 @@ func DownloadWithFolder(uri, proxy, fname string) error {
 		return err
 	}
 	dir := filepath.Join(home, "Downloads")
-	err = os.Setenv("PATH", "G:\\tdl")
-	if err != nil {
-		log.Fatal(err)
-	}
 	if path := os.Getenv("PATH"); path != "" {
 		dir = path
 	}
 	fmt.Printf("用户的个人文件夹目录: %s\n", home)
 	fmt.Printf("用户的下载文件夹目录: %s\n", dir)
-	//dir = "\\\\DESKTOP-QESMUDU\\Users\\zen\\share\\FastGin\\logic\\unit_test.go"
 	target := filepath.Join(dir, "telegram", fname)
 	os.MkdirAll(target, 0755)
-	tdl := util.WindowsTelegramLocation
-	if runtime.GOOS == "linux" {
-		tdl = util.LinuxTelegramLocation
-	}
-	cmd := exec.Command(tdl, "download", "--proxy", proxy, "--url", uri, "--dir", target)
-	fmt.Println(cmd.String())
-	err = util.ExecCommand(cmd)
+	err = util.ExecTdlCommand(proxy, uri, target)
 	if err != nil {
 		log.Println("下载命令执行出错", uri)
 		status = strings.Join([]string{status, "下载失败"}, "")
@@ -171,12 +148,10 @@ func DownloadWithFolder(uri, proxy, fname string) error {
 
 func Split(s string) (prefix string, suffix int, err error) {
 	lastSlashIndex := strings.LastIndex(s, "/")
-
 	if lastSlashIndex != -1 {
 		// 分割字符串
 		beforeLastSlash := s[:lastSlashIndex]
 		afterLastSlash, _ := strconv.Atoi(s[lastSlashIndex+1:])
-
 		return beforeLastSlash, afterLastSlash, nil
 	} else {
 		return "", -1, err

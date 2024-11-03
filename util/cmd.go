@@ -1,10 +1,12 @@
 package util
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os/exec"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -86,7 +88,18 @@ func GetKey(s string) string {
 /*
 执行tdl命令过程中可以循环打印消息
 */
-func ExecTdlCommand(tdl, proxy, uri, target string) (e error) {
+func ExecTdlCommand(proxy, uri, target string) (e error) {
+	var tdl string
+	switch runtime.GOOS {
+	case "darwin":
+		tdl = MacosTelegramLocation
+	case "windows":
+		tdl = WindowsTelegramLocation
+	case "linux":
+		tdl = LinuxTelegramLocation
+	default:
+		return errors.New("错误的系统,找不到对应的可执行文件")
+	}
 	c := exec.Command(tdl, "download", "--proxy", proxy, "--threads", "8", "--url", uri, "--dir", target)
 	log.Printf("开始执行命令:%v\n", c.String())
 	stdout, err := c.StdoutPipe()
